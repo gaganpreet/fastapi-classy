@@ -1,5 +1,7 @@
 ## FastAPI-Classy
 
+### Note: This project is still a WIP.
+
 Inspired by [Flask-Classy](https://github.com/apiguy/flask-classy).
 
 ### Why?
@@ -25,7 +27,7 @@ FastAPI Classy is opinionated, and lets you write this to achieve the same resul
 
 
 ```python
-class UserRouter(Classy):
+class UserRouter(FastAPIClassy):
     def get(user_id: int, db: Session = Depends(get_db)) -> UserSchema:
         user = db.get(User, user_id)
         if not user:
@@ -38,7 +40,7 @@ What's the difference, you might ask? In a nutshell: you don't need to use `@rou
 `get` isn't the only special method, there's six of them provided by FastAPI-Classy
 
 ```python
-classs UserRouter(Classy):
+classs UserRouter(FastAPIClassy):
     def get(user_id: int, db: Session = Depends(get_db)) -> UserSchema:
         # Maps to GET /{user_id}
         ...
@@ -67,7 +69,7 @@ classs UserRouter(Classy):
 What if you wanted something which isn't mapped? Easy peasy:
 
 ```python
-class UserRouter(Classy):
+class UserRouter(FastAPIClassy):
     ...
 
     def random(...):
