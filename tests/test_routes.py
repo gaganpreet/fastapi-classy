@@ -1,4 +1,3 @@
-import pprint
 from starlette.testclient import TestClient
 from fastapi.applications import FastAPI
 
