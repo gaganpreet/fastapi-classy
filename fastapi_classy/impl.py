@@ -1,3 +1,4 @@
+import inspect
 from typing import Any, Dict, Sequence, get_type_hints
 from fastapi import APIRouter, params
 
@@ -23,23 +24,36 @@ class FastAPIClassy:
         if hasattr(cls.Meta, "tags"):
             kwargs["tags"] = cls.Meta.tags
 
+        inst = cls()
         for method_name in method_names:
-            method = getattr(cls, method_name)
+            method = getattr(inst, method_name)
             return_type = get_type_hints(method).get("return")
+            params = list(inspect.signature(method).parameters.keys())
+            id_param = params[0] if params else None
             if return_type:
                 kwargs = {**kwargs, "response_model": return_type}
             if method_name == "get":
-                router.add_api_route("/{id}", method, methods=["GET"], **kwargs)
+                router.add_api_route(
+                    f"/{{{id_param}}}", method, methods=["GET"], **kwargs
+                )
             elif method_name == "index":
                 router.add_api_route("/", method, methods=["GET"], **kwargs)
             elif method_name == "delete":
-                router.add_api_route("/{id}", method, methods=["DELETE"], **kwargs)
+                router.add_api_route(
+                    "/{{{id_param}}}", method, methods=["DELETE"], **kwargs
+                )
             elif method_name == "patch":
-                router.add_api_route("/{id}", method, methods=["PATCH"], **kwargs)
+                router.add_api_route(
+                    "/{{{id_param}}}", method, methods=["PATCH"], **kwargs
+                )
             elif method_name == "put":
-                router.add_api_route("/{id}", method, methods=["PUT"], **kwargs)
+                router.add_api_route(
+                    "/{{{id_param}}}", method, methods=["PUT"], **kwargs
+                )
             elif method_name == "post":
-                router.add_api_route("/{id}", method, methods=["POST"], **kwargs)
+                router.add_api_route(
+                    "/{{{id_param}}}", method, methods=["POST"], **kwargs
+                )
             else:
                 router.add_api_route(f"/{method_name}", method)
         return router
