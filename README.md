@@ -55,6 +55,10 @@ class UserRouter(FastAPIClassy):
         # Maps to GET /{user_id}
         ...
 
+    def post(...) -> UserSchema:
+        # Maps to POST /
+        ...
+
     def index(self, db: Session = Depends(get_db)) -> List[UserSchema]:
         # Maps to GET /
         ...
@@ -65,10 +69,6 @@ class UserRouter(FastAPIClassy):
 
     def patch(...) -> UserSchema:
         # Maps to PATCH /{user_id}
-        ...
-
-    def post(...) -> UserSchema:
-        # Maps to POST /{user_id}
         ...
 
     def put(...) -> UserSchema:

@@ -1,3 +1,4 @@
+from functools import wraps
 import inspect
 from typing import Any, Dict, Sequence, get_type_hints
 from fastapi import APIRouter, params
@@ -40,20 +41,18 @@ class FastAPIClassy:
                 router.add_api_route("/", method, methods=["GET"], **kwargs)
             elif method_name == "delete":
                 router.add_api_route(
-                    "/{{{id_param}}}", method, methods=["DELETE"], **kwargs
+                    f"/{{{id_param}}}", method, methods=["DELETE"], **kwargs
                 )
             elif method_name == "patch":
                 router.add_api_route(
-                    "/{{{id_param}}}", method, methods=["PATCH"], **kwargs
+                    f"/{{{id_param}}}", method, methods=["PATCH"], **kwargs
                 )
             elif method_name == "put":
                 router.add_api_route(
-                    "/{{{id_param}}}", method, methods=["PUT"], **kwargs
+                    f"/{{{id_param}}}", method, methods=["PUT"], **kwargs
                 )
             elif method_name == "post":
-                router.add_api_route(
-                    "/{{{id_param}}}", method, methods=["POST"], **kwargs
-                )
+                router.add_api_route(f"/", method, methods=["POST"], **kwargs)
             else:
                 router.add_api_route(f"/{method_name}", method)
         return router
