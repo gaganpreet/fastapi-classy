@@ -1,7 +1,15 @@
-from functools import wraps
+import functools
 import inspect
-from typing import Any, Dict, Sequence, get_type_hints
+from typing import Any, Dict, Sequence, get_type_hints, Callable
 from fastapi import APIRouter, params
+
+
+def get_patched_method(method: Callable) -> Callable:
+    @functools.wraps(method)
+    def inner(*args, **kwargs):
+        return method(*args, **kwargs)
+
+    return inner
 
 
 class FastAPIClassy:
@@ -27,7 +35,7 @@ class FastAPIClassy:
 
         inst = cls()
         for method_name in method_names:
-            method = getattr(inst, method_name)
+            method = get_patched_method(getattr(inst, method_name))
             return_type = get_type_hints(method).get("return")
             params = list(inspect.signature(method).parameters.keys())
             id_param = params[0] if params else None
