@@ -89,3 +89,5 @@ class UserRouter(FastAPIClassy):
         ...
 
 ```
+
+Methods that start with `_` are private and are not magically exposed.
