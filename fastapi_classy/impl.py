@@ -1,6 +1,7 @@
+import typing
 import functools
 import inspect
-from typing import Any, Dict, Sequence, get_type_hints, Callable
+from typing import Any, Dict, Sequence, TypeVar, get_type_hints, Callable
 from fastapi import APIRouter, params
 
 
@@ -36,10 +37,18 @@ class FastAPIClassy:
         inst = cls()
         for method_name in method_names:
             method = get_patched_method(getattr(inst, method_name))
-            return_type = get_type_hints(method).get("return")
+            return_type = get_type_hints(method, include_extras=True).get("return")
             params = list(inspect.signature(method).parameters.keys())
             id_param = params[0] if params else None
             if return_type:
+                try:
+                    # Try to infer the response model from the return type
+                    # Introspection of runtime types is not straightforward in Python so this is a very hacky thing
+                    # and I'm not sure how long it will work
+                    if isinstance(return_type, TypeVar):
+                        return_type = typing.get_args(inst.__orig_bases__[0])[0]
+                except IndexError:
+                    pass
                 kwargs = {**kwargs, "response_model": return_type}
             if method_name == "get":
                 router.add_api_route(
