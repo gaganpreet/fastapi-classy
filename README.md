@@ -1,7 +1,5 @@
 ## FastAPI-Classy
 
-### Note: This project is still a WIP.
-
 Inspired by [Flask-Classy](https://github.com/apiguy/flask-classy).
 
 ### Features
@@ -9,6 +7,10 @@ Inspired by [Flask-Classy](https://github.com/apiguy/flask-classy).
 - Declarative class based routes
 - DRY: inferred response models
 - ORM agnostic
+
+### Examples
+
+Look in the [examples](examples/) directory.
 
 ### Why?
 
